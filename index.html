@@ -1,275 +1,692 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Notice Board</title>
-    <h2><b>I am taking a break 😊😂 muthafuka</b></h2>
-  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Permanent+Marker&family=DM+Sans:wght@400;700&display=swap" rel="stylesheet"/>
-  <style>
-    :root {
-      --bg: #0d0d0d;
-      --paper: #f5f0e8;
-      --red: #e63946;
-      --gold: #f4c542;
-      --ink: #1a1a2e;
-      --green: #2dc653;
-    }
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Makerere University - Examination Permit</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body {
+            font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background-color: #e5e7eb;
+            overflow-x: hidden;
+        }
+        .page-wrap {
+            max-width: 480px;
+            width: 100%;
+            margin: 0 auto;
+            background: #e5e7eb;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
 
-    * { margin: 0; padding: 0; box-sizing: border-box; }
+        /* ===== PORTAL SECTION ===== */
+        .portal-section {
+            padding: 24px 18px 20px;
+        }
+        .crest-box {
+            background: white;
+            display: inline-block;
+            padding: 14px 16px;
+            margin-bottom: 14px;
+            box-shadow: 0 1px 4px rgba(0,0,0,0.1);
+        }
+        .doc-icon {
+            color: #16a34a;
+            font-size: 1.55rem;
+            width: 40px;
+            text-align: center;
+            flex-shrink: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
 
-    body {
-      background-color: var(--bg);
-      background-image:
-        repeating-linear-gradient(
-          45deg,
-          rgba(255,255,255,0.015) 0px,
-          rgba(255,255,255,0.015) 1px,
-          transparent 1px,
-          transparent 20px
-        );
-      min-height: 100vh;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-family: 'DM Sans', sans-serif;
-      padding: 40px 20px;
-    }
+        /* ===== 3-DOC STACK WATERMARK ===== */
+        .docs-list-wrap { position: relative; }
+        .docs-stack-watermark {
+            position: absolute;
+            right: -4px;
+            top: 50%;
+            transform: translateY(-60%);
+            width: 96px;
+            height: 116px;
+            pointer-events: none;
+        }
+        .stk-card {
+            position: absolute;
+            width: 76px;
+            height: 96px;
+            border: 1.5px solid #d1d5db;
+            border-radius: 3px;
+            background: white;
+        }
+        .stk-card-3 { transform: rotate(-9deg); top: 12px; left: 0; background: #efefef; }
+        .stk-card-2 { transform: rotate(-4deg); top: 6px; left: 9px; background: #f6f6f6; }
+        .stk-card-1 {
+            transform: rotate(2deg); top: 2px; left: 16px;
+            background: white; display: flex; flex-direction: column;
+            padding: 6px 5px 5px; gap: 3px; overflow: hidden;
+        }
+        .stk-header-bar {
+            height: 8px; background: #16a34a; margin: -6px -5px 4px; width: calc(100% + 10px);
+        }
+        .stk-photo {
+            width: 18px; height: 22px; background: #b0b0b0;
+            border-radius: 1px; flex-shrink: 0; align-self: flex-start;
+        }
+        .stk-lines { display: flex; flex-direction: column; gap: 3px; margin-top: 2px; }
+        .stk-line  { height: 3px; background: #d0d0d0; border-radius: 1px; }
+        .stk-line-short { width: 55%; }
+        .stk-badge {
+            position: absolute; bottom: 5px; right: 5px;
+            width: 14px; height: 14px; background: #16a34a; border-radius: 50%;
+            color: white; font-size: 8px; display: flex;
+            align-items: center; justify-content: center; font-weight: 900;
+        }
 
-    .board {
-      background: #2b1d0e;
-      border: 6px solid #5c3a1e;
-      border-radius: 4px;
-      padding: 40px 30px;
-      width: 100%;
-      max-width: 680px;
-      box-shadow:
-        0 0 0 2px #8b5e3c,
-        0 20px 60px rgba(0,0,0,0.8),
-        inset 0 0 80px rgba(0,0,0,0.4);
-      position: relative;
-    }
+        /* SEARCH TERM BOX */
+        .search-term-box {
+            background: white;
+            border: 1.5px solid #e5e7eb;
+            padding: 14px 16px;
+            text-align: center;
+            margin: 18px 0 0;
+            font-size: 0.9rem;
+            font-weight: 800;
+            color: #dc2626;
+            letter-spacing: 0.03em;
+        }
 
-    .board::before {
-      content: "📌";
-      position: absolute;
-      top: -18px;
-      left: 50%;
-      transform: translateX(-50%);
-      font-size: 2rem;
-    }
+        /* ===== PERMIT CARD ===== */
+        .permit-card {
+            background: white;
+            border: 2px solid #16a34a;
+            margin: 16px 0 0;
+            border-radius: 2px;
+            width: 100%;
+            overflow: hidden;
+        }
+        .permit-header {
+            padding: 18px 16px 10px 16px;
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+        }
+        .permit-title-block h1 {
+            font-size: 1.42rem;
+            font-weight: 900;
+            color: #111;
+            line-height: 1.1;
+        }
+        .permit-title-block .sub {
+            font-weight: 700;
+            font-size: 0.78rem;
+            color: #111;
+            margin-top: 5px;
+            line-height: 1.45;
+        }
+        .verified-text {
+            font-size: 0.7rem;
+            color: #555;
+            margin-top: 5px;
+            font-weight: 500;
+        }
+        .green-divider {
+            height: 8px;
+            background: linear-gradient(to right, #16a34a 55%, #bbf7d0);
+            margin-bottom: 14px;
+        }
+        .exam-permit-banner {
+            background: #16a34a;
+            color: white;
+            text-align: center;
+            font-weight: 800;
+            font-size: 0.92rem;
+            letter-spacing: 0.07em;
+            padding: 10px;
+            margin: 0 14px 14px;
+        }
 
-    /* ── PIN decorations ── */
-    .pin {
-      position: absolute;
-      width: 16px;
-      height: 16px;
-      border-radius: 50%;
-      background: radial-gradient(circle at 35% 35%, #ff6b6b, #c0392b);
-      box-shadow: 0 2px 6px rgba(0,0,0,0.6);
-    }
-    .pin.tl { top: 12px; left: 16px; }
-    .pin.tr { top: 12px; right: 16px; }
-    .pin.bl { bottom: 12px; left: 16px; }
-    .pin.br { bottom: 12px; right: 16px; }
+        /* ===== STUDENT DETAILS — two separate dotted boxes ===== */
+        .student-outer {
+            margin: 0 14px 10px;
+            display: flex;
+            gap: 5px;
+            align-items: stretch;
+        }
+        /* Left box — photo, white bg */
+        .student-photo-box {
+            border: 2px dashed #16a34a;
+            border-radius: 2px;
+            background: #ffffff;
+            padding: 5px;
+            flex-shrink: 0;
+            width: 72px;
+            display: flex;
+            align-items: flex-start;
+            justify-content: center;
+        }
+        .student-photo-box img {
+            width: 62px;
+            height: 82px;
+            object-fit: cover;
+            display: block;
+        }
+        .student-photo-box .photo-placeholder {
+            width: 62px;
+            height: 82px;
+            background: #9ca3af;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        /* Right box — details table */
+        .student-details-box {
+            border: 2px dashed #16a34a;
+            border-radius: 2px;
+            flex: 1;
+            overflow: hidden;
+        }
+        .student-details-box table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.72rem;
+            table-layout: fixed;
+        }
+        .student-details-box td {
+            border: 1px solid #d1fae5;
+            padding: 5px 6px;
+            vertical-align: top;
+            word-break: break-word;
+        }
+        .student-details-box td.lbl {
+            font-weight: 800;
+            color: #111;
+        }
+        .student-details-box td.val  { color: #111; font-weight: 500; }
+        .student-details-box td.val-b { color: #111; font-weight: 700; }
 
-    /* ── NOTICE SLIP ── */
-    .notice {
-      background: var(--paper);
-      border-radius: 3px;
-      padding: 30px 28px;
-      position: relative;
-      box-shadow:
-        0 4px 16px rgba(0,0,0,0.5),
-        inset 0 0 30px rgba(0,0,0,0.04);
-      transform: rotate(-0.8deg);
-      animation: float 4s ease-in-out infinite;
-    }
+        /* Alternating row shading — student details */
+        .student-details-box tr:nth-child(odd) td  { background: #f2f2f2; }
+        .student-details-box tr:nth-child(even) td { background: #ffffff; }
 
-    @keyframes float {
-      0%, 100% { transform: rotate(-0.8deg) translateY(0); }
-      50%       { transform: rotate(-0.8deg) translateY(-4px); }
-    }
+        /* ===== COURSES / MODULES HEADING ===== */
+        .courses-heading-wrap {
+            position: relative;
+            text-align: center;
+            margin: 14px 14px 10px;
+            overflow: hidden;
+        }
+        .courses-heading-wrap .watermark {
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%, -50%);
+            width: 90px;
+            opacity: 0.18;
+            pointer-events: none;
+        }
+        .courses-heading-text {
+            position: relative;
+            display: inline-block;
+            color: #16a34a;
+            font-weight: 900;
+            font-size: 0.84rem;
+            letter-spacing: 0.06em;
+            text-transform: uppercase;
+            padding: 2px 10px;
+        }
 
-    .notice::before {
-      content: '';
-      position: absolute;
-      top: 0; left: 30px;
-      width: 2px; height: 100%;
-      background: rgba(200, 80, 80, 0.35);
-    }
+        /* ===== COURSES TABLE ===== */
+        .courses-wrap {
+            margin: 0 14px 14px;
+            border: 1.5px solid #16a34a;
+            border-radius: 1px;
+            overflow: hidden;
+        }
+        .courses-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.7rem;
+            table-layout: fixed;
+        }
+        .courses-table th {
+            background: white;
+            border: 1px solid #d1d5db;
+            padding: 6px 4px;
+            font-weight: 800;
+            color: #111;
+            text-align: center;
+            line-height: 1.3;
+        }
+        .courses-table th.left { text-align: left; padding-left: 5px; }
+        .courses-table td {
+            border: 1px solid #e5e7eb;
+            padding: 5px 4px;
+            color: #222;
+            vertical-align: top;
+            word-break: break-word;
+        }
+        .courses-table td.center { text-align: center; }
+        .courses-table .code { font-weight: 800; }
+        .retake { color: #d97706; font-weight: 700; }
 
-    /* ruled lines */
-    .notice::after {
-      content: '';
-      position: absolute;
-      top: 0; left: 0; right: 0; bottom: 0;
-      background: repeating-linear-gradient(
-        transparent,
-        transparent 31px,
-        rgba(100, 140, 200, 0.18) 31px,
-        rgba(100, 140, 200, 0.18) 32px
-      );
-      pointer-events: none;
-      border-radius: 3px;
-    }
+        /* Alternating row shading — courses table */
+        .courses-table tbody tr:nth-child(odd) td  { background: #f2f2f2; }
+        .courses-table tbody tr:nth-child(even) td { background: #ffffff; }
 
-    .notice-header {
-      font-family: 'Bebas Neue', sans-serif;
-      font-size: 0.85rem;
-      letter-spacing: 0.3em;
-      color: var(--red);
-      text-transform: uppercase;
-      margin-bottom: 18px;
-      padding-bottom: 10px;
-      border-bottom: 2px solid rgba(230, 57, 70, 0.3);
-    }
+        /* ===== NOTES ===== */
+        .notes-section {
+            margin: 4px 14px 14px;
+        }
+        .notes-title {
+            font-weight: 900;
+            font-size: 0.82rem;
+            text-decoration: underline;
+            color: #111;
+            margin-bottom: 7px;
+        }
+        .notes-section ol {
+            padding-left: 20px;
+        }
+        .notes-section ol li {
+            font-style: italic;
+            font-size: 0.74rem;
+            color: #222;
+            margin-bottom: 5px;
+            line-height: 1.5;
+            list-style-type: decimal;
+        }
+        .notes-section ol li b { font-style: normal; }
 
-    /* ── MAIN MESSAGES ── */
-    .message-1 {
-      font-family: 'Permanent Marker', cursive;
-      font-size: 2.6rem;
-      color: var(--ink);
-      line-height: 1.2;
-      margin-bottom: 10px;
-      position: relative;
-      z-index: 1;
-    }
+        /* ===== SIGNATURE ===== */
+        .sig-section {
+            padding: 8px 20px 22px;
+            display: flex;
+            justify-content: flex-end;
+        }
+        .sig-block { text-align: right; }
+        .sig-img {
+            display: block;
+            margin-left: auto;
+            height: 52px;
+            width: auto;
+            object-fit: contain;
+            margin-bottom: -6px;
+            position: relative;
+            z-index: 1;
+        }
+        .sig-line {
+            width: 160px;
+            border: none;
+            border-top: 1.5px dashed #555;
+            margin: 0 0 4px auto;
+        }
 
-    .highlight {
-      background: var(--gold);
-      padding: 0 6px;
-      border-radius: 2px;
-      display: inline-block;
-      transform: rotate(-1deg);
-      box-shadow: 2px 2px 0 rgba(0,0,0,0.15);
-    }
+        /* ===== USE STUDENT NUMBER BUTTON ===== */
+        .use-btn-wrap {
+            text-align: center;
+            padding: 18px 0 14px;
+        }
+        .use-btn {
+            background: #16a34a;
+            color: white;
+            font-weight: 800;
+            font-size: 0.86rem;
+            letter-spacing: 0.06em;
+            padding: 13px 38px;
+            border: none;
+            cursor: pointer;
+            border-radius: 2px;
+        }
 
-    .laugh-burst {
-      display: block;
-      font-size: 2.2rem;
-      margin: 12px 0 20px;
-      animation: shake 1.5s ease-in-out infinite;
-    }
-
-    @keyframes shake {
-      0%, 100% { transform: rotate(-2deg); }
-      25%       { transform: rotate(2deg) scale(1.05); }
-      75%       { transform: rotate(-1deg) scale(0.98); }
-    }
-
-    .divider {
-      height: 2px;
-      background: linear-gradient(to right, transparent, rgba(100,140,200,0.3), transparent);
-      margin: 20px 0;
-    }
-
-    .message-2 {
-      font-family: 'Permanent Marker', cursive;
-      font-size: 2.1rem;
-      color: var(--red);
-      position: relative;
-      z-index: 1;
-      line-height: 1.3;
-    }
-
-    .strikethrough {
-      text-decoration: line-through;
-      text-decoration-color: var(--red);
-      text-decoration-thickness: 3px;
-      opacity: 0.7;
-      font-size: 1.3rem;
-      display: inline;
-    }
-
-    .badge {
-      display: inline-block;
-      background: var(--red);
-      color: #fff;
-      font-family: 'Bebas Neue', sans-serif;
-      font-size: 1rem;
-      letter-spacing: 0.1em;
-      padding: 3px 10px;
-      border-radius: 2px;
-      margin-left: 8px;
-      transform: rotate(2deg);
-      vertical-align: middle;
-      box-shadow: 2px 2px 0 rgba(0,0,0,0.25);
-    }
-
-    .footer-note {
-      margin-top: 28px;
-      font-size: 0.75rem;
-      color: #999;
-      font-style: italic;
-      text-align: right;
-      position: relative;
-      z-index: 1;
-    }
-
-    .stamp {
-      position: absolute;
-      bottom: 22px;
-      right: 22px;
-      width: 80px;
-      height: 80px;
-      border: 3px solid rgba(230, 57, 70, 0.5);
-      border-radius: 50%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-family: 'Bebas Neue', sans-serif;
-      font-size: 0.7rem;
-      color: rgba(230, 57, 70, 0.55);
-      text-align: center;
-      letter-spacing: 0.05em;
-      transform: rotate(-15deg);
-      line-height: 1.2;
-      pointer-events: none;
-      z-index: 2;
-    }
-
-    .stamp::before {
-      content: '';
-      position: absolute;
-      inset: 4px;
-      border: 1px solid rgba(230, 57, 70, 0.3);
-      border-radius: 50%;
-    }
-  </style>
+        /* ===== FOOTER ===== */
+        .footer-bar {
+            background: #16a34a;
+            color: white;
+            font-size: 0.76rem;
+            font-weight: 700;
+            text-align: center;
+            padding: 15px;
+        }
+    </style>
 </head>
 <body>
+<div class="page-wrap">
 
-  <div class="board">
-    <div class="pin tl"></div>
-    <div class="pin tr"></div>
-    <div class="pin bl"></div>
-    <div class="pin br"></div>
+    <!-- ===== PORTAL SECTION ===== -->
+    <div class="portal-section">
+        <div style="text-align:center;margin-bottom:18px;">
+            <div class="crest-box">
+                <img src="mak.webp" alt="Makerere Coat of Arms" style="width:108px;height:auto;">
+            </div>
+            <p style="color:#166534;font-weight:800;font-size:1rem;letter-spacing:0.04em;margin-bottom:2px;">MAKERERE UNIVERSITY</p>
+            <p style="color:#166534;font-weight:800;font-size:1rem;letter-spacing:0.04em;">DOCUMENT VERIFICATION PORTAL</p>
+        </div>
 
-    <div class="notice">
+        <p style="color:#16a34a;font-weight:900;font-size:1.05rem;margin-bottom:16px;">TYPES OF DOCUMENTS</p>
 
-      <div class="notice-header">📋 &nbsp; Official Notice &nbsp; · &nbsp; Examination Hall</div>
+        <!-- doc list + floating watermark wrapper -->
+        <div style="position:relative;margin-bottom:28px;">
 
-      <!-- Message 1 -->
-      <div class="message-1">
-        Invigilator <span class="highlight">teyasoma</span>
-      </div>
-      <span class="laugh-burst">😂😂😂😂</span>
+            <!-- floating 3-doc watermark (right side, between rows) -->
+            <div style="position:absolute;right:0;top:32%;pointer-events:none;">
+                <img src="three.png" alt="" style="width:155px;height:auto;display:block;">
+            </div>
 
-      <div class="divider"></div>
+            <div style="display:flex;flex-direction:column;gap:17px;">
 
-      <!-- Message 2 -->
-      <div class="message-2">
-        Nawangwe <span class="strikethrough">VC</span>
-        <span class="badge">ZIII</span> 🤣
-      </div>
+                <!-- 1. PROOF OF REGISTRATION -->
+                <div style="display:flex;align-items:center;gap:14px;">
+                    <svg viewBox="0 0 32 32" width="30" height="30" fill="none" stroke="#16a34a" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M19 3H9a2 2 0 0 0-2 2v22a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V10Z"/>
+                        <path d="M19 3v7h7"/>
+                        <line x1="12" y1="16" x2="21" y2="16"/>
+                        <line x1="12" y1="20" x2="21" y2="20"/>
+                        <line x1="12" y1="24" x2="16" y2="24"/>
+                        <path d="M21.5 24.5l-3 3-1.2.4.4-1.2 3-3 .8.8z" fill="#16a34a" stroke="#16a34a" stroke-width="0.8"/>
+                        <line x1="21.5" y1="24.5" x2="19.5" y2="26.5" stroke-width="1.2"/>
+                    </svg>
+                    <span style="color:#16a34a;font-weight:700;font-size:0.92rem;">PROOF OF REGISTRATION</span>
+                </div>
 
-      <div class="footer-note">— Posted by: Anonymous Student, MAK © 2026</div>
+                <!-- 2. EXAMINATION PERMIT -->
+                <div style="display:flex;align-items:center;gap:14px;">
+                    <svg viewBox="0 0 32 32" width="30" height="30" fill="none" stroke="#16a34a" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M19 3H9a2 2 0 0 0-2 2v22a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V10Z"/>
+                        <path d="M19 3v7h7"/>
+                        <line x1="12" y1="16" x2="21" y2="16"/>
+                        <line x1="12" y1="20" x2="19" y2="20"/>
+                        <!-- shield badge bottom-right -->
+                        <path d="M22 23l2.5-1.4 2.5 1.4v3.5c0 1-2.5 2.5-2.5 2.5s-2.5-1.5-2.5-2.5Z"/>
+                        <polyline points="23,26 24.5,27.5 27,24.5" stroke-width="1.4"/>
+                    </svg>
+                    <span style="color:#16a34a;font-weight:700;font-size:0.92rem;">EXAMINATION PERMIT</span>
+                </div>
 
-      <div class="stamp">NOT<br>OFFICIAL<br>😭</div>
+                <!-- 3. CERTIFICATE -->
+                <div style="display:flex;align-items:center;gap:14px;">
+                    <svg viewBox="0 0 32 32" width="30" height="30" fill="none" stroke="#16a34a" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M16 3L4 8.5v8c0 7 5.2 13.2 12 15 6.8-1.8 12-8 12-15v-8Z"/>
+                        <polyline points="10.5,16 14,19.5 21.5,11.5"/>
+                    </svg>
+                    <span style="color:#16a34a;font-weight:700;font-size:0.92rem;">CERTIFICATE</span>
+                </div>
 
+                <!-- 4. TRANSCRIPT -->
+                <div style="display:flex;align-items:center;gap:14px;">
+                    <svg viewBox="0 0 32 32" width="30" height="30" fill="none" stroke="#16a34a" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M19 3H9a2 2 0 0 0-2 2v22a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V10Z"/>
+                        <path d="M19 3v7h7"/>
+                        <line x1="12" y1="16" x2="21" y2="16"/>
+                        <line x1="12" y1="20" x2="19" y2="20"/>
+                        <!-- circle-check badge bottom-right -->
+                        <circle cx="23.5" cy="25.5" r="4"/>
+                        <polyline points="21.5,25.5 23,27 26,23.5" stroke-width="1.4"/>
+                    </svg>
+                    <span style="color:#16a34a;font-weight:700;font-size:0.92rem;">TRANSCRIPT</span>
+                </div>
+
+                <!-- 5. VIRTUAL ID -->
+                <div style="display:flex;align-items:center;gap:14px;">
+                    <svg viewBox="0 0 32 32" width="30" height="30" fill="none" stroke="#16a34a" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round">
+                        <rect x="2" y="7" width="28" height="19" rx="2"/>
+                        <circle cx="10.5" cy="16" r="3.2"/>
+                        <path d="M5 26c0-3 2.5-5.2 5.5-5.2s5.5 2.2 5.5 5.2"/>
+                        <line x1="18" y1="13" x2="27" y2="13"/>
+                        <line x1="18" y1="17" x2="27" y2="17"/>
+                        <line x1="18" y1="21" x2="23" y2="21"/>
+                    </svg>
+                    <span style="color:#16a34a;font-weight:700;font-size:0.92rem;">VIRTUAL ID</span>
+                </div>
+
+                <!-- 6. GRADUATION INVITATION CARD -->
+                <div style="display:flex;align-items:center;gap:14px;">
+                    <svg viewBox="0 0 32 32" width="30" height="30" fill="none" stroke="#16a34a" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M19 3H9a2 2 0 0 0-2 2v22a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V10Z"/>
+                        <path d="M19 3v7h7"/>
+                        <line x1="12" y1="16" x2="21" y2="16"/>
+                        <!-- graduation cap badge bottom-right -->
+                        <polygon points="24.5,20 28.5,22 24.5,24 20.5,22" fill="#16a34a" stroke="#16a34a" stroke-width="0.8" stroke-linejoin="round"/>
+                        <line x1="28.5" y1="22" x2="28.5" y2="25.5"/>
+                        <path d="M22.5 23.2v2.5c0 .8 1 1.3 2 1.3s2-.5 2-1.3v-2.5"/>
+                    </svg>
+                    <span style="color:#16a34a;font-weight:700;font-size:0.92rem;">GRADUATION INVITATION CARD</span>
+                </div>
+
+            </div>
+        </div>
+
+        <!-- QR Code — actual qr.png image -->
+        <div style="text-align:center;margin-bottom:8px;">
+            <img src="qr.png" alt="QR Code" style="width:114px;height:114px;object-fit:contain;display:inline-block;">
+            <p style="font-size:0.72rem;color:#555;margin-top:7px;font-weight:500;letter-spacing:0.02em;">SCAN THE QR CODE ON YOUR DOCUMENT TO VERIFY.</p>
+        </div>
+
+        <!-- SEARCH TERM BOX -->
+        <div class="search-term-box">
+            SEARCH TERM: 2400704317
+        </div>
     </div>
-  </div>
 
+    <!-- ===== PERMIT CARD ===== -->
+    <div class="permit-card">
+
+        <!-- Header -->
+        <div class="permit-header">
+            <img src="mak.webp" alt="Crest" style="width:50px;height:auto;flex-shrink:0;margin-top:3px;">
+            <div class="permit-title-block">
+                <h1>MAKERERE UNIVERSITY</h1>
+                <p class="sub">OFFICE OF THE ACADEMIC REGISTRAR<br>STUDENT EXAMINATION PERMIT</p>
+                <p class="verified-text" id="verifiedTime">VERIFIED ON: —</p>
+            </div>
+        </div>
+
+        <!-- Green gradient divider -->
+        <div class="green-divider"></div>
+
+        <!-- Banner -->
+        <div class="exam-permit-banner">EXAMINATION PERMIT</div>
+
+        <!-- Student Details — photo box + details box, small gap between -->
+        <div class="student-outer">
+
+            <!-- LEFT: photo box, white bg, dashed border -->
+            <div class="student-photo-box">
+                <img src="ket.jpeg" alt="BAZIMBYE Mwesigwa Michael"
+                     onerror="this.outerHTML='<div class=\'photo-placeholder\'><i class=\'fa-solid fa-user\' style=\'font-size:1.8rem;color:#fff;\'></i></div>'">
+            </div>
+
+            <!-- RIGHT: details box, dashed border, alternating rows -->
+            <div class="student-details-box">
+                <table>
+                    <colgroup>
+                        <col style="width:30%"><!-- label -->
+                        <col style="width:32%"><!-- value -->
+                        <col style="width:22%"><!-- label2 -->
+                        <col style="width:16%"><!-- value2 -->
+                    </colgroup>
+                    <tr>
+                        <td class="lbl">FULL NAME:</td>
+                        <td class="val-b" style="font-size:0.71rem;">BAZIMBYE Mwesigwa Michael</td>
+                        <td class="lbl" style="font-size:0.68rem;">FEES BAL DUE:</td>
+                        <td class="val-b">0 UGX</td>
+                    </tr>
+                    <tr>
+                        <td class="lbl">SEX:</td>
+                        <td class="val" colspan="3">MALE</td>
+                    </tr>
+                    <tr>
+                        <td class="lbl">STUDENT NO.:</td>
+                        <td class="val" colspan="3">2400704317</td>
+                    </tr>
+                    <tr>
+                        <td class="lbl">REGISTRATION NO.:</td>
+                        <td class="val" colspan="3">24/U/04317/PS</td>
+                    </tr>
+                    <tr>
+                        <td class="lbl">PROGRAMME:</td>
+                        <td class="val" colspan="3" style="font-size:0.68rem;">BACHELOR OF SCIENCE IN POPULATION STUDIES – BPOP</td>
+                    </tr>
+                    <tr>
+                        <td class="lbl">STUDY YEAR:</td>
+                        <td class="val">YEAR 2</td>
+                        <td class="lbl">CAMPUS:</td>
+                        <td class="val">MAIN CAMPUS</td>
+                    </tr>
+                    <tr>
+                        <td class="lbl">SEMESTER:</td>
+                        <td class="val">SEMESTER II</td>
+                        <td class="lbl">ACADEMIC YEAR:</td>
+                        <td class="val">2025/2026</td>
+                    </tr>
+                </table>
+            </div>
+
+        </div>
+
+        <!-- COURSES/MODULES REGISTERED heading -->
+        <div class="courses-heading-wrap">
+            <img src="mak.webp" alt="" class="watermark">
+            <span class="courses-heading-text">COURSES/MODULES REGISTERED</span>
+        </div>
+
+        <!-- Courses Table -->
+        <div class="courses-wrap">
+            <table class="courses-table">
+                <colgroup>
+                    <col style="width:6%">
+                    <col style="width:auto">
+                    <col style="width:13%">
+                    <col style="width:13%">
+                    <col style="width:18%">
+                </colgroup>
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th class="left">COURSE NAME</th>
+                        <th>CREDIT UNITS</th>
+                        <th>CATEGORY</th>
+                        <th>STATUS</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td class="center">1</td>
+                        <td><span class="code">BPS1220:</span> BASIC DEMOGRAPHIC METHODS</td>
+                        <td class="center">4</td>
+                        <td class="center">CORE</td>
+                        <td class="center retake">RETAKE PAPER</td>
+                    </tr>
+                    <tr>
+                        <td class="center">2</td>
+                        <td><span class="code">BPS1224:</span> STATISTICAL INFERENCE FOR POPULATION SCIENTISTS</td>
+                        <td class="center">3</td>
+                        <td class="center">CORE</td>
+                        <td class="center retake">RETAKE PAPER</td>
+                    </tr>
+                    <tr>
+                        <td class="center">3</td>
+                        <td><span class="code">BPS2221:</span> FAMILY DEMOGRAPHY</td>
+                        <td class="center">3</td>
+                        <td class="center">CORE</td>
+                        <td class="center">NORMAL PAPER</td>
+                    </tr>
+                    <tr>
+                        <td class="center">4</td>
+                        <td><span class="code">BPS2222:</span> POPULATION POLICIES &amp; PROGRAMMES</td>
+                        <td class="center">3</td>
+                        <td class="center">CORE</td>
+                        <td class="center">NORMAL PAPER</td>
+                    </tr>
+                    <tr>
+                        <td class="center">5</td>
+                        <td><span class="code">BPS2223:</span> DATA PROCESSING FOR POPULATION SCIENTISTS II</td>
+                        <td class="center">3</td>
+                        <td class="center">CORE</td>
+                        <td class="center">NORMAL PAPER</td>
+                    </tr>
+                    <tr>
+                        <td class="center">6</td>
+                        <td><span class="code">BPS2224:</span> RESEARCH METHODS FOR POPULATION SCIENTISTS</td>
+                        <td class="center">4</td>
+                        <td class="center">CORE</td>
+                        <td class="center">NORMAL PAPER</td>
+                    </tr>
+                    <tr>
+                        <td class="center">7</td>
+                        <td><span class="code">BPS2225:</span> MONITORING AND EVALUATION OF POPULATION PROGRAMMES</td>
+                        <td class="center">3</td>
+                        <td class="center">CORE</td>
+                        <td class="center">NORMAL PAPER</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- NOTES -->
+        <div class="notes-section">
+            <p class="notes-title">NOTES:</p>
+            <ol>
+                <li><b>Total Credits Registered for 2025/2026 SEMESTER II is 23.</b></li>
+                <li>This card is confidential and must be produced to the invigilator when required at each examination.</li>
+                <li>Your <b>STUDENT NUMBER</b> and not your name must appear on every answer book or supplementary sheet.</li>
+                <li>Unauthorized materials/notes should <b>NOT</b> be carried into the examination room.</li>
+                <li>Mobile phones, Ipads and Tablets should <b>NOT</b> be brought close to the examination room.</li>
+                <li>Students shall abide by the University Examination Regulations.</li>
+            </ol>
+        </div>
+
+        <!-- Signature -->
+        <div class="sig-section">
+            <div class="sig-block">
+                <img src="sig.png" alt="Signature" class="sig-img">
+                <hr class="sig-line">
+                <p style="font-size:0.76rem;font-weight:800;color:#111;letter-spacing:0.04em;text-align:right;">ACADEMIC REGISTRAR</p>
+            </div>
+        </div>
+
+    </div><!-- end permit-card -->
+
+    <!-- USE STUDENT NUMBER button -->
+    <div class="use-btn-wrap">
+        <button class="use-btn">USE STUDENT NUMBER</button>
+    </div>
+
+    <!-- Footer -->
+    <div class="footer-bar">©2026 – HEMIS Consortium. All rights Reserved.</div>
+
+</div><!-- end page-wrap -->
+
+<script>
+    function getOrdinal(n) {
+        const s = ["TH","ST","ND","RD"], v = n % 100;
+        return n + (s[(v - 20) % 10] || s[v] || s[0]);
+    }
+    function formatDateTime(d) {
+        const days   = ["SUNDAY","MONDAY","TUESDAY","WEDNESDAY","THURSDAY","FRIDAY","SATURDAY"];
+        const months = ["JANUARY","FEBRUARY","MARCH","APRIL","MAY","JUNE",
+                        "JULY","AUGUST","SEPTEMBER","OCTOBER","NOVEMBER","DECEMBER"];
+        const day   = days[d.getDay()];
+        const month = months[d.getMonth()];
+        const date  = getOrdinal(d.getDate());
+        const year  = d.getFullYear();
+        let   h     = d.getHours();
+        const m     = String(d.getMinutes()).padStart(2,'0');
+        const s     = String(d.getSeconds()).padStart(2,'0');
+        const ampm  = h >= 12 ? 'PM' : 'AM';
+        h = h % 12 || 12;
+        return `VERIFIED ON: ${day}, ${month} ${date} ${year}, ${h}:${m}:${s} ${ampm}`;
+    }
+    function tick() {
+        const el = document.getElementById('verifiedTime');
+        if (el) el.textContent = formatDateTime(new Date());
+    }
+    tick();
+    setInterval(tick, 1000);
+</script>
 </body>
 </html>
